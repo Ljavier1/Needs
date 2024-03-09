@@ -1,0 +1,26 @@
+/* Estilos del footer */
+.footer-container {
+    background-color: #f0f0f0; /* Fondo gris claro */
+    padding: 1rem;
+    text-align: center;
+    position: fixed; /* Posicionamiento fijo */
+    bottom: 0; /* Posiciona al final de la página */
+    left: 0; /* Posiciona a la izquierda */
+    right: 0; /* Posiciona a la derecha */
+    width: 100%; /* Ocupa todo el ancho */
+    z-index: 10; /* Se coloca encima de otros elementos */
+  }
+  
+  /* Evita que el footer se superponga al contenido si no hay scroll */
+  body.no-scroll {
+    overflow: hidden; /* Deshabilita el scroll */
+  }
+  
+  /* Media Query para vista de ordenador */
+  @media (min-width: 768px) {
+    .footer-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+  }
+  
