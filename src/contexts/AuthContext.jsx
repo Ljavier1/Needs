@@ -12,7 +12,9 @@ export const AuthProvider = ({ children }) => {
     const token = Auth.getToken();
     if (token) {
       const profile = Auth.getProfile();
-      fetchUserProfile(profile.id);
+      if (profile && profile.id) {
+        fetchUserProfile(profile.id);
+      }
     }
   }, []);
 
@@ -30,7 +32,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (token) => {
     Auth.login(token);
     const profile = Auth.getProfile();
-    await fetchUserProfile(profile.id);
+    if (profile && profile.id) {
+      await fetchUserProfile(profile.id);
+    }
   };
 
   const logout = () => {
