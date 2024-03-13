@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // Check for existing token on initial render
   useEffect(() => {
     const token = Auth.getToken();
     if (token) {
@@ -18,16 +19,18 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/users/${userId}`);
+      const response = await axios.get(`http://localhost:3000/users/${userId}`); // Replace with your API endpoint
+      // Assuming user data is in response.data.data
       setUser(response.data.data);
       setIsAuthenticated(true);
     } catch (error) {
-      console.log(error);
+      console.error("Error al obtener datos del usuario:", error);
+      // Handle errors appropriately
     }
   };
 
   const login = async (token) => {
-    Auth.login(token);
+    Auth.login(token); // Call your login function from utils/auth
     const profile = Auth.getProfile();
     await fetchUserProfile(profile.id);
   };
@@ -39,9 +42,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, isAuthenticated, login, logout }}
-    >
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

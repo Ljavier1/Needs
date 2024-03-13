@@ -1,18 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import "./tasks.css";
+import Header from "../Header/Header.jsx";
+import TaskDetail from '../TaskDetail/TaskDetail.jsx';
+
+const baseUrl = "http://localhost:3000";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
-  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const response = await axios.get('/api/tasks/getAllTasks');
+        const response = await axios.get(`${baseUrl}/tasks`);
         setTasks(response.data.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -20,39 +30,61 @@ const Tasks = () => {
   }, []);
 
   useEffect(() => {
-    const getUser = async (userId) => {
-      try {
-        const response = await axios.get(`/api/users/${userId}`);
-        setUser(response.data.data);
-      } catch (error) {
-        console.error(error);
+    const handleRouteChange = () => {
+      const path = window.location.pathname;
+      const match = path.match(/^\/tasks\/(\d+)$/);
+      if (match) {
+        setSelectedTaskId(parseInt(match[1]));
       }
     };
 
-    if (tasks.length > 0) {
-      getUser(tasks[0].user_id);
-    }
-  }, [tasks]);
+    window.addEventListener('popstate', handleRouteChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
 
   return (
     <div className="container">
+      {isAuthenticated && <Header />}
       <div className="tasks-list">
-        {tasks.map((task) => (
-          <div key={task.id} className="task">
-            <h2>{task.title}</h2>
-            {user && user.name && (
-              <p className="author">
-                Created by: {user.name}
-              </p>
-            )}
-            {user && user.avatar && (
-              <img src={user.avatar} alt="User avatar" />
-            )}
-            <p>{task.description}</p>
-            {task.created_at && <p>Created at: {task.created_at}</p>}
-          </div>
-        ))}
+        {isLoading ? (
+          <p>Cargando información de las tareas...</p>
+        ) : (tasks && tasks.length === 0) ? (
+          <p>No hay tareas disponibles.</p>
+        ) : (
+          tasks.map((task) => (
+            <div
+              key={task.id}
+              className="task"
+              // onClick={() => handleTaskClick(task.id)} // Eliminado
+            >
+              <div className="task-header">
+                <h2>{task.title}</h2>
+                <div className="task-status">
+                  {task.completed ? (
+                    <>
+                      <span className="status-icon green"></span>
+                      <span>Completada</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="status-icon red"></span>
+                      <span>No completada</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              <p>{task.description}</p>
+              {task.created_at && <p>Creado en: {task.created_at}</p>}
+              <Link to={`/tasks/${task.id}`}>Ver en detalle</Link>
+              <span className="comment-count">{task.comments_count}</span>
+            </div>
+          ))
+        )}
       </div>
+      {selectedTaskId && <TaskDetail taskId={selectedTaskId} />}
     </div>
   );
 };

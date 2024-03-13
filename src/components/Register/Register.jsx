@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./register.css";
 
+axios.defaults.baseURL = "http://localhost:3000";
+
 const Register = () => {
   const [credentials, setCredentials] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -15,11 +17,42 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validación de entrada de usuario (ejemplo para nombre)
+    const trimmedName = credentials.name.trim();
+    if (!trimmedName) {
+      setErrors(["El nombre es obligatorio"]);
+      return; // Prevenir el envío del formulario si la validación falla
+    }
+
+    // Validación adicional para otros campos (correo electrónico, contraseña, etc.)
+    const trimmedEmail = credentials.email.trim();
+    if (!trimmedEmail || !/\S+@\S+\.\S+/.test(trimmedEmail)) {
+      setErrors(["Correo electrónico no válido"]);
+      return;
+    }
+
+    const trimmedPassword = credentials.password.trim();
+    if (!trimmedPassword || trimmedPassword.length < 6) {
+      setErrors(["La contraseña debe tener al menos 6 caracteres"]);
+      return;
+    }
+
+    if (credentials.password !== credentials.confirmPassword) {
+      setErrors(["Las contraseñas no coinciden"]);
+      return;
+    }
+
     try {
-      const response = await axios.post("/api/auth/register", credentials);
+      const response = await axios.post("/users/register", {
+        name: credentials.name,
+        email: credentials.email,
+        password: credentials.password,
+      });
       console.log(response);
 
-      window.location.href = "/";
+      // Asumiendo que el registro exitoso redirige a la página de inicio de sesión
+      window.location.href = "/login"; // Cambia a tu ruta de inicio de sesión
+
     } catch (error) {
       console.log(error.response.data);
       setErrors(error.response.data.errors);
@@ -39,15 +72,18 @@ const Register = () => {
       <h1 className="title">Registro</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Nombre de usuario</label>
+          <label htmlFor="name">Nombre</label>
           <input
             type="text"
-            id="username"
-            name="username"
-            value={credentials.username}
+            id="name"
+            name="name"
+            value={credentials.name}
             onChange={handleChange}
             className="form-control"
           />
+          {errors && errors.some((error) => error.includes("name")) && (
+            <span className="error">{errors[0]}</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="email">Correo electrónico</label>
@@ -59,6 +95,9 @@ const Register = () => {
             onChange={handleChange}
             className="form-control"
           />
+          {errors && errors.some((error) => error.includes("email")) && (
+            <span className="error">{errors[0]}</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="password">Contraseña</label>
@@ -70,6 +109,9 @@ const Register = () => {
             onChange={handleChange}
             className="form-control"
           />
+          {errors && errors.some((error) => error.includes("password")) && (
+            <span className="error">{errors[0]}</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirmar contraseña</label>
@@ -81,6 +123,9 @@ const Register = () => {
             onChange={handleChange}
             className="form-control"
           />
+          {errors && errors.some((error) => error.includes("confirmPassword")) && (
+            <span className="error">{errors[0]}</span>
+          )}
         </div>
         <button type="submit" className="btn btn-primary">
           Registrarse

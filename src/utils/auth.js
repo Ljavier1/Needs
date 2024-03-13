@@ -20,12 +20,12 @@ class Auth {
 
   login(token) {
     localStorage.setItem(this.tokenKey, token);
-    window.location.reload();
+    return Promise.resolve(); // Return a Promise for potential async operations
   }
 
   logout() {
     localStorage.removeItem(this.tokenKey);
-    window.location.reload();
+    return Promise.resolve();
   }
 }
 

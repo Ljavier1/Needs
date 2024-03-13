@@ -3,65 +3,96 @@
 /* Mobile */
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  padding: 20px 10px;
-}
-
-.tasks-list {
-  width: 100%;
-  max-width: 400px;
-  background-color: #fafafa;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.task {
-  margin: 10px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-.task h2 {
-  font-size: 18px;
-  font-weight: bold;
-  color: blue;
-  margin-bottom: 10px;
-}
-
-.task p {
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.author {
-  font-style: italic;
-  font-weight: bold;
-  color: orange;
-}
-
-.task img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-/* Ordenador */
-
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    padding: 20px 10px;
   }
-
+  
   .tasks-list {
-    width: 80%;
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 400px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
-}
+  
+  .task {
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .task-status {
+    display: flex;
+    align-items: center;
+  }
+  
+  .status-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  
+  .status-icon.green {
+    background-color: #3399ff; /* Azul claro */
+  }
+  
+  .status-icon.red {
+    background-color: #ff9933; /* Naranja */
+  }
+  
+  .task h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #3399ff; /* Azul claro */
+    margin-bottom: 10px;
+  }
+  
+  .task p {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .task a {
+    color: #3399ff; /* Azul claro */
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .task a:hover {
+    text-decoration: underline;
+  }
+  
+  .comment-count {
+    font-size: 12px;
+    color: #666;
+    margin-left: 10px;
+  }
+  
+  /* Ordenador */
+  
+  @media (min-width: 768px) {
+    .container {
+      flex-direction: row;
+    }
+  
+    .tasks-list {
+      width: 80%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  }
+  

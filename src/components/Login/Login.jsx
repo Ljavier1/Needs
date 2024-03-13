@@ -1,23 +1,13 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../../context/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContext.jsx";
 
-axios.defaults.baseURL = "http://localhost:3000/api";
-
-const LogIn = () => {
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
-
+const Login = () => {
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
   const { login } = useContext(AuthContext);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("users/login", credentials);
-      login(response.data.data.token);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,36 +17,47 @@ const LogIn = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("users/login", credentials);
+      await login(response.data.data.token);
+      // Redirige o actualiza la interfaz de usuario después de un inicio de sesión exitoso
+    } catch (error) {
+      console.error("Login error:", error);
+      // Muestra un mensaje de error al usuario
+    }
+  };
+
   return (
     <>
-      <div className="container">
-        <form className="inputContainer" onSubmit={handleSubmit}>
-          <h3 className="containerTitle">Inicia Sesión</h3>
-          <div className="formContainer">
-            <input
-              className="logIn_input"
-              type="email"
-              name="email"
-              value={credentials.email}
-              placeholder="Ingresa tu correo"
-              onChange={handleChange}
-            />
-            <input
-              className="logIn_input"
-              type="password"
-              name="password"
-              value={credentials.password}
-              placeholder="Ingresa tu Contraseña"
-              onChange={handleChange}
-            />
-            <button className="buttonInput" type="submit">
-              Ingresar
-            </button>
-          </div>
-        </form>
-      </div>
+      <h2>Ingresar</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="">
+          Correo
+          <input
+            type="email"
+            name="email"
+            value={credentials.email}
+            placeholder="Ingresa tu correo"
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor="">
+          Contraseña
+          <input
+            type="password"
+            name="password"
+            value={credentials.password}
+            placeholder="Ingresa tu contraseña"
+            onChange={handleChange}
+          />
+        </label>
+        <button type="submit">Ingresar</button>
+      </form>
     </>
   );
 };
 
-export default LogIn;
+export default Login;
