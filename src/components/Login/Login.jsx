@@ -1,6 +1,7 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
+import Tasks from "../Tasks/Tasks.jsx"; // Importa el componente de Tasks
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -8,6 +9,7 @@ const Login = () => {
     password: "",
   });
   const { login } = useContext(AuthContext);
+  const [redirectToTasks, setRedirectToTasks] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,39 +25,46 @@ const Login = () => {
     try {
       const response = await axios.post("users/login", credentials);
       await login(response.data.data.token);
-      
+      setRedirectToTasks(true); // Redirige al usuario después del inicio de sesión
     } catch (error) {
       console.error("Login error:", error);
-      ario
     }
   };
 
   return (
     <>
-      <h2>Ingresar</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="">
-          Correo
-          <input
-            type="email"
-            name="email"
-            value={credentials.email}
-            placeholder="Ingresa tu correo"
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="">
-          Contraseña
-          <input
-            type="password"
-            name="password"
-            value={credentials.password}
-            placeholder="Ingresa tu contraseña"
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Ingresar</button>
-      </form>
+      {redirectToTasks ? (
+        <Tasks />
+      ) : (
+        <>
+          <h2>Ingresar</h2>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">
+              Correo
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={credentials.email}
+                placeholder="Ingresa tu correo"
+                onChange={handleChange}
+              />
+            </label>
+            <label htmlFor="password">
+              Contraseña
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={credentials.password}
+                placeholder="Ingresa tu contraseña"
+                onChange={handleChange}
+              />
+            </label>
+            <button type="submit">Ingresar</button>
+          </form>
+        </>
+      )}
     </>
   );
 };
