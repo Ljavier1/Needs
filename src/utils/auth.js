@@ -20,7 +20,7 @@ class Auth {
 
   login(token) {
     localStorage.setItem(this.tokenKey, token);
-    return Promise.resolve(); // Return a Promise for potential async operations
+    return Promise.resolve();
   }
 
   logout() {
