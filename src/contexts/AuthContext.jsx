@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check for existing token on initial render
   useEffect(() => {
     const token = Auth.getToken();
     if (token) {
@@ -19,18 +18,17 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:3000/users/${userId}`); // Replace with your API endpoint
-      // Assuming user data is in response.data.data
+      const response = await axios.get(`http://localhost:3000/user/${userId}`);
+      
       setUser(response.data.data);
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Error al obtener datos del usuario:", error);
-      // Handle errors appropriately
     }
   };
 
   const login = async (token) => {
-    Auth.login(token); // Call your login function from utils/auth
+    Auth.login(token);
     const profile = Auth.getProfile();
     await fetchUserProfile(profile.id);
   };
