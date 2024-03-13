@@ -16,15 +16,13 @@ const Comments = ({ taskId, comments }) => {
     try {
       const response = await axios.post(`http://localhost:3000/tasks/${taskId}/comments`, requestBody);
 
-      // If request is successful
       if (response.status === 201) {
-        // Update comments list
         const newComments = [...comments, response.data.data];
         setNewComment('');
 
-        console.log('Comentario publicado correctamente.'); // Log message for success
+        console.log('Comentario publicado correctamente.'); 
       } else {
-        console.error('Error al publicar el comentario.'); // Log message for error
+        console.error('Error al publicar el comentario.'); 
       }
     } catch (error) {
       console.error(error);
@@ -59,7 +57,7 @@ const Comments = ({ taskId, comments }) => {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         />
-        {isLoading && <p>Cargando...</p>}  {/* Simple loading text */}
+        {isLoading && <p>Cargando...</p>} 
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Publicando...' : 'Publicar comentario'}
         </button>

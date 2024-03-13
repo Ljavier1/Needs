@@ -23,10 +23,10 @@ const Login = () => {
     try {
       const response = await axios.post("users/login", credentials);
       await login(response.data.data.token);
-      // Redirige o actualiza la interfaz de usuario después de un inicio de sesión exitoso
+      
     } catch (error) {
       console.error("Login error:", error);
-      // Muestra un mensaje de error al usuario
+      ario
     }
   };
 

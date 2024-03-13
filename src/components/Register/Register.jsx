@@ -17,11 +17,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación de entrada de usuario (ejemplo para nombre)
     const trimmedName = credentials.name.trim();
     if (!trimmedName) {
       setErrors(["El nombre es obligatorio"]);
-      return; // Prevenir el envío del formulario si la validación falla
+      return; 
     }
 
     // Validación adicional para otros campos (correo electrónico, contraseña, etc.)
@@ -50,8 +49,7 @@ const Register = () => {
       });
       console.log(response);
 
-      // Asumiendo que el registro exitoso redirige a la página de inicio de sesión
-      window.location.href = "/login"; // Cambia a tu ruta de inicio de sesión
+      window.location.href = "/login";
 
     } catch (error) {
       console.log(error.response.data);

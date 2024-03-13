@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
-// import Comments from '../components/Comments/Comments.jsx'; // Importación correcta de Comments.jsx
+// import Comments from '../components/Comments/Comments.jsx'; 
 
 const TaskDetail = () => {
   const { user } = useContext(AuthContext);
@@ -85,7 +85,7 @@ const TaskDetail = () => {
           <h2>{task.title}</h2>
           <p>{task.description}</p>
           {task.created_at && <p>Creado en: {task.created_at}</p>}
-          {/* Mostrar información del usuario (si está disponible) */}
+        
           {task.user && (
             <>
               <p>Creado por: {task.user.name}</p>
