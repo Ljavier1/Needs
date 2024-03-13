@@ -7,6 +7,7 @@ import { AuthProvider } from './contexts/AuthContext.jsx'; // Importa el AuthPro
 import TaskDetail from './components/TaskDetail/TaskDetail.jsx';
 import Register from './components/Register/Register.jsx';
 import Login from './components/Login/Login.jsx';
+import CreateTask from './components/CreateTask/CreateTask.jsx'; // Importa el componente CreateTask
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/tasks/:taskId" element={<TaskDetail />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/new-task" element={<CreateTask />} />
           </Routes>
         </div>
       </BrowserRouter>
